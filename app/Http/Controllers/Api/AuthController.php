@@ -17,7 +17,7 @@ class AuthController extends Controller
     public function Signup(SignupRequest $request)
     {
         $data = $request->validated();
-        // @var \App\Models\User $user
+        /** @var \App\Models\User $user */
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -33,10 +33,12 @@ class AuthController extends Controller
         $credentials = $request->validated();
 
         if (!Auth::attempt($credentials)) {
-            return response(["message" => "Invalid credentials"], 401);
+            return response([
+                "message" => "Provided email address or password is incorrect"
+            ], 422);
         }
-
-        $user = User::where('email', $credentials['email'])->first();
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
         $token = $user->createToken('main')->plainTextToken;
 
         return response(compact('user', 'token'));
@@ -44,8 +46,11 @@ class AuthController extends Controller
 
     public function Logout(Request $request)
     {
+        /** @var \App\Models\User $user */
         $user = $request->user();
-        $user->currentAccessToken()->delete();
+        /** @var \Laravel\Sanctum\PersonalAccessToken $token */
+        $token = $user->currentAccessToken();
+        $token->delete();
 
         return response([
             'success' => true,
