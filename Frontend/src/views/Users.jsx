@@ -52,8 +52,9 @@ function Users() {
                         <th>ID</th>
                         <th>Name</th>
                         <th>Email</th>
+                        <th>Created At</th>
                         <th>Actions</th>
-                        {/* <th>Created At</th>
+                        {/* 
                         <th>Updated At</th> */}
                     </tr>
                     </thead>
@@ -71,7 +72,8 @@ function Users() {
                         <td>{user.id}</td>
                         <td>{user.name}</td>
                         <td>{user.email}</td>
-                        {/* <td>{user.created_at}</td>
+                        <td>{user.created_at}</td>
+                        {/* 
                         <td>{user.updated_at}</td> */}
                         <td>
                             <Link to={'/users/'+user.id} className="btn-edit">Edit</Link>
